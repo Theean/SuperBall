@@ -18,6 +18,8 @@ public class Token : MonoBehaviour
 
     void Start()
     {
+        PlayerBall = GameManager.instance.ball;
+
         z = OuterRing.transform.localScale;
         x = OuterRing.transform.position;
         y = PlayerBall.transform.position;

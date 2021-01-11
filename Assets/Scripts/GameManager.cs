@@ -4,15 +4,33 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public static GameManager instance;
+
+    public Transform baseTransform;
+
+    public GameObject ball;
+
+    private void Awake()
     {
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(this.gameObject);
+        }
 
+        DontDestroyOnLoad(this.gameObject);
+
+        //ball.transform.parent = baseTransform;
     }
-
     // Update is called once per frame
     void Update()
     {
-        
+        /*if (ball.transform.position.z != baseTransform.position.z)
+        {
+            ball.transform.position = new Vector3(ball.transform.position.x, ball.transform.position.y, baseTransform.position.z);
+        }*/
     }
 }
