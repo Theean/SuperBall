@@ -22,26 +22,22 @@ public class ColourManager : MonoBehaviour
             {
                 colourList[i].GetComponent<SpriteRenderer>().color = Color.white;
             }
-            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 10 && player.GetComponent<Rigidbody2D>().velocity.x < 30)
+            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 10 && player.GetComponent<Rigidbody2D>().velocity.x < 20)
             {
-                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.cyan, (player.GetComponent<Rigidbody2D>().velocity.x - 10) / (30 - 10));
+                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.white, Color.cyan, (player.GetComponent<Rigidbody2D>().velocity.x - 10) / (20 - 10));
             }
-            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 30 && player.GetComponent<Rigidbody2D>().velocity.x < 50)
+            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 20 && player.GetComponent<Rigidbody2D>().velocity.x < 50)
             {
-                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.cyan, Color.blue, (player.GetComponent<Rigidbody2D>().velocity.x - 30) / (50 - 30));
+                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.cyan, Color.magenta, (player.GetComponent<Rigidbody2D>().velocity.x - 20) / (50 - 20));
             }
-            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 50 && player.GetComponent<Rigidbody2D>().velocity.x < 70)
+            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 50 && player.GetComponent<Rigidbody2D>().velocity.x < 80)
             {
-                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.blue, Color.magenta, (player.GetComponent<Rigidbody2D>().velocity.x - 50) / (70 - 50));
+                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.magenta, Color.red, (player.GetComponent<Rigidbody2D>().velocity.x - 50) / (80 - 50));
             }
-            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 70 && player.GetComponent<Rigidbody2D>().velocity.x < 90)
+            /*else if (player.GetComponent<Rigidbody2D>().velocity.x >= 70 && player.GetComponent<Rigidbody2D>().velocity.x < 80)
             {
-                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.magenta, Color.red, (player.GetComponent<Rigidbody2D>().velocity.x - 70) / (90 - 70));
-            }
-            else if (player.GetComponent<Rigidbody2D>().velocity.x >= 90 && player.GetComponent<Rigidbody2D>().velocity.x < 110)
-            {
-                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.red, Color.yellow, (player.GetComponent<Rigidbody2D>().velocity.x - 90) / (110 - 90));
-            }
+                colourList[i].GetComponent<SpriteRenderer>().color = Color.Lerp(Color.magenta, Color.red, (player.GetComponent<Rigidbody2D>().velocity.x - 60) / (80 - 60));
+            }*/
         }
     }
 }

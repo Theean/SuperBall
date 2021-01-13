@@ -30,7 +30,7 @@ public class Token : MonoBehaviour
     {
         y = PlayerBall.transform.position;
 
-        playerDistance = (y - x).magnitude;
+        //playerDistance = (y - x).magnitude;
 
         if (playerDistance < 50f)
         {
@@ -39,7 +39,12 @@ public class Token : MonoBehaviour
 
         if (isClose == true)
         {
-            OuterRing.transform.localScale = z * playerDistance/2;
+            //OuterRing.transform.localScale = z * playerDistance/4;
         }
+
+        playerDistance = x.x - y.x;
+        float normalValue = (playerDistance - 0) / (25 - 0);
+
+        OuterRing.transform.localScale = Vector3.Lerp(transform.localScale * 2f, transform.localScale * 8, normalValue);
     }
 }

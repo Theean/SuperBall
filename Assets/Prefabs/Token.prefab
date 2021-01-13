@@ -97,7 +97,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.32
+  m_Radius: 1.6
 --- !u!114 &6739232893670115759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -116,6 +116,7 @@ MonoBehaviour:
   y: {x: 0, y: 0}
   ringSize: 0
   playerDistance: 0
+  z: {x: 0, y: 0}
   isClose: 0
   isPassed: 0
 --- !u!1 &4695398374166603210
@@ -213,4 +214,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 0.32
+  m_Radius: 1.6
