@@ -8,9 +8,14 @@ public class Ball : MonoBehaviour
     [SerializeField] GameObject trailPrefab;
     public GameObject trailParticle; //temporarily public atm
 
+    public GameObject perfectsprite;
+    public GameObject greatsprite;
+    public GameObject goodsprite;
+
     AudioSource source;
     Rigidbody2D rigidbody;
     public bool canBoost;
+    public bool canBreak;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
 
     // Start is called before the first frame update
@@ -37,21 +42,61 @@ public class Ball : MonoBehaviour
                 if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.3)
                 {
                     Debug.Log("Perfect!");
+                    var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
+                    //sx.transform.parent = transform;
+                    Destroy(sx, 1f);
                     SoundManager.instance.PlayPerfect(source);
                 }
                 else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
                 {
                     Debug.Log("Great!");
+                    var sy = Instantiate(greatsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
+                    //sy.transform.parent = transform;
                     SoundManager.instance.PlayOkay(source);
+                    Destroy(sy, 1f);
                 }
                 else
                 {
                     Debug.Log("Good!");
+                    var sz = Instantiate(goodsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
+                    //sz.transform.parent = transform;
                     SoundManager.instance.PlayBad(source);
+                    Destroy(sz, 1f);
                 }
 
                 rigidbody.AddForce(new Vector2(400, 600));
-                trailParticle.GetComponent<ParticleSystem>().Stop();
+            }
+            else if (canBreak)
+            {
+                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.3)
+                {
+                    Debug.Log("Perfect!");
+                    var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
+                    //sx.transform.parent = transform;
+                    Destroy(sx, 1f);
+                    SoundManager.instance.PlayPerfect(source);
+                }
+                else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
+                {
+                    Debug.Log("Great!");
+                    var sy = Instantiate(greatsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
+                    //sy.transform.parent = transform;
+                    SoundManager.instance.PlayOkay(source);
+                    Destroy(sy, 1f);
+                }
+                else
+                {
+                    Debug.Log("Good!");
+                    var sz = Instantiate(goodsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
+                    //sz.transform.parent = transform;
+                    SoundManager.instance.PlayBad(source);
+                    Destroy(sz, 1f);
+                }
+
+                Destroy(tempToken);
+                rigidbody.AddForce(new Vector2(400, 0));
+                Instantiate(particleEffect, transform.position, Quaternion.identity);
+
             }
             else
             {
@@ -96,6 +141,11 @@ public class Ball : MonoBehaviour
             canBoost = true;
             tempToken = collision.gameObject;
         }
+        else if (collision.tag == "Token2")
+        {
+            canBreak = true;
+            tempToken = collision.gameObject;
+        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
@@ -103,6 +153,10 @@ public class Ball : MonoBehaviour
         if (collision.tag == "Token")
         {
             canBoost = false;
+        }
+        else if (collision.tag == "Token2")
+        {
+            canBreak = false;
         }
     }
 
