@@ -4,7 +4,9 @@ using UnityEngine;
 
 public class Ball : MonoBehaviour
 {
-    public GameObject particleEffect;
+    [SerializeField] GameObject particleEffect;
+    [SerializeField] GameObject trailPrefab;
+    public GameObject trailParticle; //temporarily public atm
 
     AudioSource source;
     Rigidbody2D rigidbody;
@@ -16,6 +18,10 @@ public class Ball : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody2D>();
+
+        trailParticle = Instantiate(trailPrefab, transform.position, Quaternion.identity);
+        //var main = t.GetComponent<ParticleSystem>().main;
+        //main.startColor = GetComponent<SpriteRenderer>().color;
     }
 
     // Update is called once per frame
@@ -44,7 +50,8 @@ public class Ball : MonoBehaviour
                     SoundManager.instance.PlayBad(source);
                 }
 
-                    rigidbody.AddForce(new Vector2(400, 600));
+                rigidbody.AddForce(new Vector2(400, 600));
+                trailParticle.GetComponent<ParticleSystem>().Stop();
             }
             else
             {
@@ -53,6 +60,7 @@ public class Ball : MonoBehaviour
                 {
                     rigidbody.AddForce(new Vector2(0, 500));
                     SoundManager.instance.PlayJump(source);
+                    trailParticle.GetComponent<ParticleSystem>().Stop();
                 }
             }
         }
@@ -65,9 +73,11 @@ public class Ball : MonoBehaviour
             rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
         }
 
-        //Debug.Log(rigidbody.velocity);
 
-
+        //TRAIL PARTICLE FOLLOW & COLOUR
+        trailParticle.transform.position = new Vector3(transform.position.x - 0.4f, transform.position.y - 0.4f, transform.position.z);
+        var main = trailParticle.GetComponent<ParticleSystem>().main;
+        main.startColor = new Color(GetComponent<SpriteRenderer>().color.r + 0.2f, GetComponent<SpriteRenderer>().color.g + 0.2f, GetComponent<SpriteRenderer>().color.b + 0.2f);
     }
 
     private void FixedUpdate()
@@ -103,11 +113,13 @@ public class Ball : MonoBehaviour
             GameObject obj = Instantiate(particleEffect, transform.position, Quaternion.identity);
             var main = obj.GetComponent<ParticleSystem>().main;
             main.startColor = GetComponent<SpriteRenderer>().color;
+            //obj.GetComponent<ParticleSystem>().Stop();
 
             RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 0.5f);
             if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
             {
                 SoundManager.instance.PlayLand(source);
+                trailParticle.GetComponent<ParticleSystem>().Play();
             }
             else
             {

@@ -21,7 +21,9 @@ public class TEMP_Reset : MonoBehaviour
     {
         if (collision.GetComponent<Ball>())
         {
+            collision.GetComponent<Ball>().trailParticle.GetComponent<ParticleSystem>().Stop();
             collision.transform.position = new Vector3(resetPos.transform.position.x, collision.transform.position.y, collision.transform.position.z);
+            collision.GetComponent<Ball>().trailParticle.GetComponent<ParticleSystem>().Play();
         }
     }
 

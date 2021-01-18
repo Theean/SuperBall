@@ -40,6 +40,11 @@ namespace UnityStandardAssets.Cameras
 			m_TransformTargetRot = transform.localRotation;
         }
 
+        private void Start()
+        {
+            CrossPlatformInputManager.SwitchActiveInputMethod(CrossPlatformInputManager.ActiveInputMethod.Hardware);
+        }
+
 
         protected void Update()
         {
