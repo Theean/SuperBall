@@ -22,8 +22,6 @@ public class GameManager : MonoBehaviour
         }
 
         DontDestroyOnLoad(this.gameObject);
-
-        //ball.transform.parent = baseTransform;
     }
     // Update is called once per frame
     void Update()

@@ -6,87 +6,63 @@ public class Ball : MonoBehaviour
 {
     public GameObject particleEffect;
 
-
-    Rigidbody2D rigidbody2D;
-    Rigidbody rigidbody;
+    AudioSource source;
+    Rigidbody2D rigidbody;
     public bool canBoost;
+    GameObject tempToken; //used to keep track of which token the ball is currently in contact with
 
     // Start is called before the first frame update
     void Start()
     {
-        if (GetComponent<Rigidbody>())
-        {
-            rigidbody = GetComponent<Rigidbody>();
-        }
-        else if (GetComponent<Rigidbody2D>())
-        {
-            rigidbody2D = GetComponent<Rigidbody2D>();
-        }
-
-
-        //rigidbody.AddForce(transform.right * 800.0f);
-
+        source = GetComponent<AudioSource>();
+        rigidbody = GetComponent<Rigidbody2D>();
     }
 
     // Update is called once per frame
     void Update()
     {
+        //JUMP & BOOST
         if (OVRInput.GetDown(OVRInput.Button.One) || Input.GetKeyDown("space"))
         {
             if (canBoost)
             {
-                if (GetComponent<Rigidbody>())
+                //Mathf.Abs((gameObject.transform.position - tempToken.transform.position).magnitude) <= 0.3
+
+                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.3)
                 {
-                    rigidbody.AddForce(new Vector3(400, 600, 0));
+                    Debug.Log("Perfect!");
+                    SoundManager.instance.PlayPerfect(source);
                 }
-                else if (GetComponent<Rigidbody2D>())
+                else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
                 {
-                    rigidbody2D.AddForce(new Vector2(400, 600));
+                    Debug.Log("Great!");
+                    SoundManager.instance.PlayOkay(source);
                 }
+                else
+                {
+                    Debug.Log("Good!");
+                    SoundManager.instance.PlayBad(source);
+                }
+
+                    rigidbody.AddForce(new Vector2(400, 600));
             }
             else
             {
-                if (GetComponent<Rigidbody>())
+                RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 0.5f);
+                if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
                 {
-                    RaycastHit hit;
-
-                    if (Physics.Raycast(transform.position, -Vector3.up, out hit, 0.5f) && hit.collider.tag == "Obstacle")
-                    {
-                        rigidbody.AddForce(new Vector3(0, 500, 0));
-                    }
+                    rigidbody.AddForce(new Vector2(0, 500));
+                    SoundManager.instance.PlayJump(source);
                 }
-                else if (GetComponent<Rigidbody2D>())
-                {
-                    RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 0.5f);
-
-                    if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
-                    {
-                        rigidbody2D.AddForce(new Vector2(0, 500));
-                    }
-                }
-
-
-                
             }
         }
-            //rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
+        //rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
 
-            //SPEED CONTROL
-        
+        //SPEED CONTROL
 
-        if (GetComponent<Rigidbody>())
+        if (rigidbody.velocity.x < 10)
         {
-            if (Mathf.Abs(rigidbody.velocity.x) < 5)
-            {
-                rigidbody.velocity = new Vector3(rigidbody.velocity.x * 2, rigidbody.velocity.y, rigidbody.velocity.z);
-            }
-        }
-        else if (GetComponent<Rigidbody2D>())
-        {
-            if (rigidbody2D.velocity.x < 10)
-            {
-                rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x + 0.05f, rigidbody2D.velocity.y);
-            }
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
         }
 
         //Debug.Log(rigidbody.velocity);
@@ -108,46 +84,13 @@ public class Ball : MonoBehaviour
         if (collision.tag == "Token")
         {
             canBoost = true;
-        }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.tag == "Token")
-        {
-            canBoost = true;
-        }
-
-        if (other.tag == "Bounce")
-        {
-            rigidbody.velocity = new Vector3(rigidbody.velocity.x * -1f, rigidbody.velocity.y, rigidbody.velocity.z);
-
-
-            //Vector3 newVel = GameManager.instance.baseTransform.transform.InverseTransformDirection(rigidbody.velocity);
-            ////newVel = new Vector3(-newVel.x, newVel.y, newVel.z);
-            //Debug.Log(newVel.x);
-            //newVel.x *= -newVel.x;
-            //Debug.Log(newVel.x);
-            //rigidbody.velocity = transform.TransformDirection(newVel);
-            //Debug.Log("TRIGGER");
-
-            GameObject obj = Instantiate(particleEffect, transform.position, Quaternion.identity);
-            var main = obj.GetComponent<ParticleSystem>().main;
-            main.startColor = GetComponent<SpriteRenderer>().color;
+            tempToken = collision.gameObject;
         }
     }
 
     private void OnTriggerExit2D(Collider2D collision)
     {
         if (collision.tag == "Token")
-        {
-            canBoost = false;
-        }
-    }
-
-    private void OnTriggerExit(Collider other)
-    {
-        if (other.tag == "Token")
         {
             canBoost = false;
         }
@@ -160,29 +103,16 @@ public class Ball : MonoBehaviour
             GameObject obj = Instantiate(particleEffect, transform.position, Quaternion.identity);
             var main = obj.GetComponent<ParticleSystem>().main;
             main.startColor = GetComponent<SpriteRenderer>().color;
+
+            RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 0.5f);
+            if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
+            {
+                SoundManager.instance.PlayLand(source);
+            }
+            else
+            {
+                SoundManager.instance.PlayWallHit(source);
+            }
         }
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        if (collision.collider.tag == "Obstacle")
-        {
-            GameObject obj = Instantiate(particleEffect, transform.position, Quaternion.identity);
-            var main = obj.GetComponent<ParticleSystem>().main;
-            main.startColor = GetComponent<SpriteRenderer>().color;
-        }
-
-        /*if (collision.collider.tag == "Bounce")
-        {
-            Debug.Log("TRIGGER");
-
-            GameObject obj = Instantiate(particleEffect, transform.position, Quaternion.identity);
-            var main = obj.GetComponent<ParticleSystem>().main;
-            main.startColor = GetComponent<SpriteRenderer>().color;
-
-            Vector3 newVel = transform.InverseTransformDirection(rigidbody.velocity);
-            newVel = new Vector3(-newVel.x, newVel.y, newVel.z);
-            rigidbody.velocity = transform.TransformDirection(newVel);
-        }*/
     }
 }
