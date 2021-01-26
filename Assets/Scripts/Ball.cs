@@ -11,6 +11,7 @@ public class Ball : MonoBehaviour
     public GameObject perfectsprite;
     public GameObject greatsprite;
     public GameObject goodsprite;
+    public float ballMaximumSpeed;
 
     public GameObject breakBox;
     public int breakNumber=10;
@@ -96,7 +97,7 @@ public class Ball : MonoBehaviour
                     Destroy(sz, 1f);
                 }
 
-                Destroy(tempToken);
+                //Destroy(tempToken);
                 rigidbody.AddForce(new Vector2(400, 0));
                 Explosion();
 
@@ -116,7 +117,7 @@ public class Ball : MonoBehaviour
 
         //SPEED CONTROL
 
-        if (rigidbody.velocity.x < 10)
+        if (rigidbody.velocity.x < ballMaximumSpeed)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
         }
@@ -193,9 +194,7 @@ public class Ball : MonoBehaviour
         for (int i = 0; i < breakNumber; i++)
         {
             Instantiate(breakBox, transform.position, Quaternion.identity);
-        }
-
-        
+        }      
     }
 
 
