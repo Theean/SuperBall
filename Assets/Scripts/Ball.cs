@@ -12,6 +12,7 @@ public class Ball : MonoBehaviour
     public GameObject greatsprite;
     public GameObject goodsprite;
     public float ballMaximumSpeed;
+    Vector2 currentBallSpeed;
 
     public GameObject breakBox;
     public int breakNumber=10;
@@ -99,7 +100,8 @@ public class Ball : MonoBehaviour
 
                 //Destroy(tempToken);
                 rigidbody.AddForce(new Vector2(400, 0));
-                Explosion();
+                StartCoroutine(speedBurst());
+
 
             }
             else
@@ -188,7 +190,6 @@ public class Ball : MonoBehaviour
 
 
 
-
     private void Explosion()
     {
         for (int i = 0; i < breakNumber; i++)
@@ -197,5 +198,12 @@ public class Ball : MonoBehaviour
         }      
     }
 
-
+    IEnumerator speedBurst()
+    {
+        currentBallSpeed = rigidbody.velocity;
+        rigidbody.velocity = new Vector2(20, rigidbody.velocity.y);
+        yield return new WaitForSeconds(0.3f);
+        Explosion();
+        rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
+    }
 }
