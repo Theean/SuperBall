@@ -6601,6 +6601,9 @@ MonoBehaviour:
     type: 3}
   goodsprite: {fileID: 7093359280803198198, guid: 7bfc22233d190ef41bbf1575d5fb1a66,
     type: 3}
+  breakBox: {fileID: 7709816095887083003, guid: b0f922e20b1faa242be0c05ffc611294,
+    type: 3}
+  breakNumber: 10
   canBoost: 0
   canBreak: 0
 --- !u!82 &868267823
@@ -7702,11 +7705,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 6739232893670115759, guid: 835d43f388978db49be2ff8b5442905c,
-        type: 3}
-      propertyPath: PlayerBall
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 9198723854509387167, guid: 835d43f388978db49be2ff8b5442905c,
         type: 3}
       propertyPath: m_SortingOrder
@@ -7716,6 +7714,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SortingOrder
       value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6739232893670115759, guid: 835d43f388978db49be2ff8b5442905c,
+        type: 3}
+      propertyPath: PlayerBall
+      value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 835d43f388978db49be2ff8b5442905c, type: 3}

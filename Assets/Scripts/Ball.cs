@@ -12,6 +12,9 @@ public class Ball : MonoBehaviour
     public GameObject greatsprite;
     public GameObject goodsprite;
 
+    public GameObject breakBox;
+    public int breakNumber=10;
+
     AudioSource source;
     Rigidbody2D rigidbody;
     public bool canBoost;
@@ -95,7 +98,7 @@ public class Ball : MonoBehaviour
 
                 Destroy(tempToken);
                 rigidbody.AddForce(new Vector2(400, 0));
-                Instantiate(particleEffect, transform.position, Quaternion.identity);
+                Explosion();
 
             }
             else
@@ -181,4 +184,19 @@ public class Ball : MonoBehaviour
             }
         }
     }
+
+
+
+
+    private void Explosion()
+    {
+        for (int i = 0; i < breakNumber; i++)
+        {
+            Instantiate(breakBox, transform.position, Quaternion.identity);
+        }
+
+        
+    }
+
+
 }
