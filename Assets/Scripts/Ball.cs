@@ -11,7 +11,8 @@ public class Ball : MonoBehaviour
     public GameObject perfectsprite;
     public GameObject greatsprite;
     public GameObject goodsprite;
-    public float ballMaximumSpeed;
+    float ballMinimumSpeed;
+    float ballMaximumSpeed;
     Vector2 currentBallSpeed;
 
     public GameObject breakBox;
@@ -28,6 +29,9 @@ public class Ball : MonoBehaviour
     {
         source = GetComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody2D>();
+
+        ballMinimumSpeed = 10f;
+        ballMaximumSpeed = 50f;
 
         trailParticle = Instantiate(trailPrefab, transform.position, Quaternion.identity);
         //var main = t.GetComponent<ParticleSystem>().main;
@@ -69,7 +73,9 @@ public class Ball : MonoBehaviour
                     Destroy(sz, 1f);
                 }
 
-                rigidbody.AddForce(new Vector2(400, 600));
+                //rigidbody.AddForce(new Vector2(400, 600));
+
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x + 5f, 15f);
             }
             else if (canBreak)
             {
@@ -117,9 +123,11 @@ public class Ball : MonoBehaviour
         }
         //rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
 
+        //Debug.Log(rigidbody.velocity.x);
+
         //SPEED CONTROL
 
-        if (rigidbody.velocity.x < ballMaximumSpeed)
+        if (rigidbody.velocity.x < ballMinimumSpeed)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
         }
@@ -204,6 +212,6 @@ public class Ball : MonoBehaviour
         rigidbody.velocity = new Vector2(20, rigidbody.velocity.y);
         yield return new WaitForSeconds(0.3f);
         Explosion();
-        rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
+        rigidbody.velocity = new Vector2(ballMinimumSpeed - 2, rigidbody.velocity.y);
     }
 }
