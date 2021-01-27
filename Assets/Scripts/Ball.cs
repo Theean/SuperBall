@@ -26,7 +26,7 @@ public class Ball : MonoBehaviour
     public bool superCharged;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
 
-    public delegate void OnPerfectDelegate();
+    public delegate void OnPerfectDelegate(Color color);
     public static OnPerfectDelegate perfectHit;
 
     // Start is called before the first frame update
@@ -60,7 +60,7 @@ public class Ball : MonoBehaviour
                     //sx.transform.parent = transform;
                     Destroy(sx, 1f);
                     SoundManager.instance.PlayPerfect(source);
-                    perfectHit();
+                    perfectHit(GetComponent<SpriteRenderer>().color);
                 }
                 else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.8)
                 {
@@ -92,7 +92,7 @@ public class Ball : MonoBehaviour
                     //sx.transform.parent = transform;
                     Destroy(sx, 1f);
                     SoundManager.instance.PlayPerfect(source);
-                    perfectHit();
+                    perfectHit(GetComponent<SpriteRenderer>().color);
                 }
                 else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.8)
                 {
@@ -112,14 +112,15 @@ public class Ball : MonoBehaviour
                 }
 
                 //Destroy(tempToken);
-                rigidbody.AddForce(new Vector2(400, 0));
+                //rigidbody.AddForce(new Vector2(400, 0));
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x + 10f, 0);
                 StartCoroutine(speedBurst());
 
 
             }
             else
             {
-                RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 0.5f);
+                RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 1f);
                 if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
                 {
                     rigidbody.AddForce(new Vector2(0, 500));
@@ -180,10 +181,12 @@ public class Ball : MonoBehaviour
                 rigidbody.velocity = new Vector2(rigidbody.velocity.x - 10f, rigidbody.velocity.y);
 
                 //Play bad break wall sound
+                SoundManager.instance.PlayBad(source);
             }
             else
             {
                 //Play Good Break Wall sound
+                SoundManager.instance.PlayBreak(source);
             }
 
 

@@ -4,10 +4,11 @@ using UnityEngine;
 
 public class Background : MonoBehaviour
 {
-    Quaternion randomRot;
     float xSpin;
     float ySpin;
     float zSpin;
+
+    Color currentColour;
 
     private void OnEnable()
     {
@@ -22,7 +23,7 @@ public class Background : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        randomRot = Random.rotation;
+        //currentColour = GetComponent<Material>().color;
 
         xSpin = Random.Range(0.0f, 0.5f);
         ySpin = Random.Range(0.0f, 0.5f);
@@ -36,9 +37,10 @@ public class Background : MonoBehaviour
         //transform.Rotate(0, ySpin, 0);
     }
 
-    void Beat()
+    void Beat(Color colour)
     {
         transform.localScale = new Vector3(transform.localScale.x + 2f, transform.localScale.y + 2f, transform.localScale.z + 2f);
+        //GetComponent<Material>().color = colour;
         StartCoroutine(BeatTimer());
     }
 
@@ -46,5 +48,6 @@ public class Background : MonoBehaviour
     {
         yield return new WaitForSeconds(0.25f);
         transform.localScale = new Vector3(transform.localScale.x - 2f, transform.localScale.y - 2f, transform.localScale.z - 2f);
+        //GetComponent<Material>().color = currentColour;
     }
 }
