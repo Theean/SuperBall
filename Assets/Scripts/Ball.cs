@@ -7,6 +7,7 @@ public class Ball : MonoBehaviour
     [SerializeField] GameObject particleEffect;
     [SerializeField] GameObject trailPrefab;
     public GameObject trailParticle; //temporarily public atm
+    public GameObject speedBurstParticle;
 
     public GameObject perfectsprite;
     public GameObject greatsprite;
@@ -210,7 +211,9 @@ public class Ball : MonoBehaviour
     {
         currentBallSpeed = rigidbody.velocity;
         rigidbody.velocity = new Vector2(20, rigidbody.velocity.y);
+        speedBurstParticle.GetComponent<ParticleSystem>().Play();
         yield return new WaitForSeconds(0.3f);
+        speedBurstParticle.GetComponent<ParticleSystem>().Stop();
         Explosion();
         Destroy(tempToken);
         //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
