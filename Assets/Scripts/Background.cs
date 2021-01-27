@@ -8,6 +8,17 @@ public class Background : MonoBehaviour
     float xSpin;
     float ySpin;
     float zSpin;
+
+    private void OnEnable()
+    {
+        Ball.perfectHit += Beat;
+    }
+
+    private void OnDisable()
+    {
+        Ball.perfectHit -= Beat;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -23,5 +34,17 @@ public class Background : MonoBehaviour
         transform.Rotate(xSpin, ySpin, zSpin);
 
         //transform.Rotate(0, ySpin, 0);
+    }
+
+    void Beat()
+    {
+        transform.localScale = new Vector3(transform.localScale.x + 2f, transform.localScale.y + 2f, transform.localScale.z + 2f);
+        StartCoroutine(BeatTimer());
+    }
+
+    IEnumerator BeatTimer()
+    {
+        yield return new WaitForSeconds(0.25f);
+        transform.localScale = new Vector3(transform.localScale.x - 2f, transform.localScale.y - 2f, transform.localScale.z - 2f);
     }
 }

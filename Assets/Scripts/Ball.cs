@@ -25,6 +25,9 @@ public class Ball : MonoBehaviour
     public bool canBreak;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
 
+    public delegate void OnPerfectDelegate();
+    public static OnPerfectDelegate perfectHit;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -49,15 +52,16 @@ public class Ball : MonoBehaviour
             {
                 //Mathf.Abs((gameObject.transform.position - tempToken.transform.position).magnitude) <= 0.3
 
-                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.3)
+                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.5)
                 {
                     Debug.Log("Perfect!");
                     var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sx.transform.parent = transform;
                     Destroy(sx, 1f);
                     SoundManager.instance.PlayPerfect(source);
+                    perfectHit();
                 }
-                else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
+                else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.8)
                 {
                     Debug.Log("Great!");
                     var sy = Instantiate(greatsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
@@ -80,15 +84,16 @@ public class Ball : MonoBehaviour
             }
             else if (canBreak)
             {
-                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.3)
+                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.5)
                 {
                     Debug.Log("Perfect!");
                     var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sx.transform.parent = transform;
                     Destroy(sx, 1f);
                     SoundManager.instance.PlayPerfect(source);
+                    perfectHit();
                 }
-                else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
+                else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.8)
                 {
                     Debug.Log("Great!");
                     var sy = Instantiate(greatsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
@@ -160,6 +165,11 @@ public class Ball : MonoBehaviour
         {
             canBreak = true;
             tempToken = collision.gameObject;
+        }
+        else if (collision.tag == "Breakable")
+        {
+            //Do Something
+            Debug.Log("Collision Triggered");
         }
     }
 
