@@ -23,6 +23,7 @@ public class Ball : MonoBehaviour
     Rigidbody2D rigidbody;
     public bool canBoost;
     public bool canBreak;
+    public bool superCharged;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
 
     public delegate void OnPerfectDelegate();
@@ -169,7 +170,23 @@ public class Ball : MonoBehaviour
         else if (collision.tag == "Breakable")
         {
             //Do Something
+            Explosion();
+            tempToken = collision.gameObject;
+            Destroy(tempToken);
             Debug.Log("Collision Triggered");
+
+            if (superCharged == false)
+            {
+                rigidbody.velocity = new Vector2(rigidbody.velocity.x - 10f, rigidbody.velocity.y);
+
+                //Play bad break wall sound
+            }
+            else
+            {
+                //Play Good Break Wall sound
+            }
+
+
         }
     }
 
@@ -222,10 +239,12 @@ public class Ball : MonoBehaviour
         currentBallSpeed = rigidbody.velocity;
         rigidbody.velocity = new Vector2(20, rigidbody.velocity.y);
         speedBurstParticle.GetComponent<ParticleSystem>().Play();
-        yield return new WaitForSeconds(0.3f);
-        speedBurstParticle.GetComponent<ParticleSystem>().Stop();
-        Explosion();
+        superCharged = true;
         Destroy(tempToken);
+        yield return new WaitForSeconds(0.5f);
+        superCharged = false;
+        speedBurstParticle.GetComponent<ParticleSystem>().Stop();
+        
         //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
     }
 }
