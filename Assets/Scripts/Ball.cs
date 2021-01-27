@@ -212,6 +212,7 @@ public class Ball : MonoBehaviour
         rigidbody.velocity = new Vector2(20, rigidbody.velocity.y);
         yield return new WaitForSeconds(0.3f);
         Explosion();
-        rigidbody.velocity = new Vector2(ballMinimumSpeed - 2, rigidbody.velocity.y);
+        Destroy(tempToken);
+        //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
     }
 }
