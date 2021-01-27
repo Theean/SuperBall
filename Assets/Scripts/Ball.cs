@@ -53,7 +53,7 @@ public class Ball : MonoBehaviour
             {
                 //Mathf.Abs((gameObject.transform.position - tempToken.transform.position).magnitude) <= 0.3
 
-                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.5)
+                if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
                 {
                     Debug.Log("Perfect!");
                     var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
@@ -244,10 +244,13 @@ public class Ball : MonoBehaviour
         speedBurstParticle.GetComponent<ParticleSystem>().Play();
         superCharged = true;
         Destroy(tempToken);
+        rigidbody.gravityScale = 0;
+        
         yield return new WaitForSeconds(0.5f);
         superCharged = false;
         speedBurstParticle.GetComponent<ParticleSystem>().Stop();
-        
+        rigidbody.gravityScale = 2;
+
         //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
     }
 }
