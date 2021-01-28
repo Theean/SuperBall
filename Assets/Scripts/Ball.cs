@@ -14,7 +14,7 @@ public class Ball : MonoBehaviour
     public GameObject goodsprite;
     float ballMinimumSpeed;
     float ballMaximumSpeed;
-    Vector2 currentBallSpeed;
+    float currentBallSpeed;
 
     public GameObject breakBox;
     public int breakNumber=10;
@@ -36,7 +36,7 @@ public class Ball : MonoBehaviour
         rigidbody = GetComponent<Rigidbody2D>();
 
         ballMinimumSpeed = 10f;
-        ballMaximumSpeed = 50f;
+        ballMaximumSpeed = 40f;
 
         trailParticle = Instantiate(trailPrefab, transform.position, Quaternion.identity);
         //var main = t.GetComponent<ParticleSystem>().main;
@@ -113,7 +113,7 @@ public class Ball : MonoBehaviour
 
                 //Destroy(tempToken);
                 //rigidbody.AddForce(new Vector2(400, 0));
-                rigidbody.velocity = new Vector2(rigidbody.velocity.x + 10f, 0);
+                //rigidbody.velocity = new Vector2(rigidbody.velocity.x + 10f, 0);
                 StartCoroutine(speedBurst());
 
 
@@ -138,6 +138,11 @@ public class Ball : MonoBehaviour
         if (rigidbody.velocity.x < ballMinimumSpeed)
         {
             rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
+        }
+
+        if (rigidbody.velocity.x > ballMaximumSpeed && superCharged == false)
+        {
+            rigidbody.velocity = new Vector2(ballMaximumSpeed, rigidbody.velocity.y);
         }
 
 
@@ -239,17 +244,18 @@ public class Ball : MonoBehaviour
 
     IEnumerator speedBurst()
     {
-        currentBallSpeed = rigidbody.velocity;
-        rigidbody.velocity = new Vector2(20, rigidbody.velocity.y);
+        currentBallSpeed = rigidbody.velocity.x;
+        rigidbody.velocity = new Vector2(50, 0);
         speedBurstParticle.GetComponent<ParticleSystem>().Play();
         superCharged = true;
         Destroy(tempToken);
         rigidbody.gravityScale = 0;
         
-        yield return new WaitForSeconds(0.5f);
+        yield return new WaitForSeconds(0.15f);
         superCharged = false;
         speedBurstParticle.GetComponent<ParticleSystem>().Stop();
         rigidbody.gravityScale = 2;
+        rigidbody.velocity = new Vector2 (currentBallSpeed, 0);
 
         //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
     }
