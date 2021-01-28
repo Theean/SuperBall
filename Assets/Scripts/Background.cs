@@ -8,16 +8,22 @@ public class Background : MonoBehaviour
     float ySpin;
     float zSpin;
 
+    bool end;
+
+    Vector3 direction;
+
     Color currentColour;
 
     private void OnEnable()
     {
         Ball.perfectHit += Beat;
+        EndTrigger.onEndTrigger += End;
     }
 
     private void OnDisable()
     {
         Ball.perfectHit -= Beat;
+        EndTrigger.onEndTrigger -= End;
     }
 
     // Start is called before the first frame update
@@ -35,6 +41,11 @@ public class Background : MonoBehaviour
         transform.Rotate(xSpin, ySpin, zSpin);
 
         //transform.Rotate(0, ySpin, 0);
+
+        if (end)
+        {
+            transform.Translate(direction * 5 * Time.fixedDeltaTime);
+        }
     }
 
     void Beat(Color colour)
@@ -49,5 +60,11 @@ public class Background : MonoBehaviour
         yield return new WaitForSeconds(0.25f);
         transform.localScale = new Vector3(transform.localScale.x - 2f, transform.localScale.y - 2f, transform.localScale.z - 2f);
         //GetComponent<Material>().color = currentColour;
+    }
+
+    void End(Transform ballPos)
+    {
+        direction = ballPos.position - transform.position;
+        end = true;
     }
 }

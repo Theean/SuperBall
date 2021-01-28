@@ -5,7 +5,7 @@ using UnityEngine;
 public class Ball : MonoBehaviour
 {
     [SerializeField] GameObject particleEffect;
-    [SerializeField] GameObject trailPrefab;
+   // [SerializeField] GameObject trailPrefab;
     public GameObject trailParticle; //temporarily public atm
     public GameObject speedBurstParticle;
 
@@ -24,21 +24,35 @@ public class Ball : MonoBehaviour
     public bool canBoost;
     public bool canBreak;
     public bool superCharged;
+    bool isDecaying;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
+
+    public float startSpeed;
 
     public delegate void OnPerfectDelegate(Color color);
     public static OnPerfectDelegate perfectHit;
+
+    public delegate void OnGreenToken();
+    public static OnGreenToken greenHit;
+
+    public delegate void OnStartDelegate(GameObject obj);
+    public static OnStartDelegate startDeclare;
 
     // Start is called before the first frame update
     void Start()
     {
         source = GetComponent<AudioSource>();
         rigidbody = GetComponent<Rigidbody2D>();
+        startDeclare(gameObject);
 
         ballMinimumSpeed = 10f;
         ballMaximumSpeed = 40f;
 
-        trailParticle = Instantiate(trailPrefab, transform.position, Quaternion.identity);
+        rigidbody.velocity = new Vector2(startSpeed, 0);
+
+        
+
+        //trailParticle = Instantiate(trailPrefab, transform.position, Quaternion.identity);
         //var main = t.GetComponent<ParticleSystem>().main;
         //main.startColor = GetComponent<SpriteRenderer>().color;
     }
@@ -47,7 +61,7 @@ public class Ball : MonoBehaviour
     void Update()
     {
         //JUMP & BOOST
-        if (OVRInput.GetDown(OVRInput.Button.One) || Input.GetKeyDown("space"))
+        if (OVRInput.GetDown(OVRInput.Button.One) || Input.GetKeyDown("space") || OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
         {
             if (canBoost)
             {
@@ -55,7 +69,7 @@ public class Ball : MonoBehaviour
 
                 if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
                 {
-                    Debug.Log("Perfect!");
+                    //Debug.Log("Perfect!");
                     var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sx.transform.parent = transform;
                     Destroy(sx, 1f);
@@ -64,7 +78,7 @@ public class Ball : MonoBehaviour
                 }
                 else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.8)
                 {
-                    Debug.Log("Great!");
+                    //Debug.Log("Great!");
                     var sy = Instantiate(greatsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sy.transform.parent = transform;
                     SoundManager.instance.PlayOkay(source);
@@ -72,7 +86,7 @@ public class Ball : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Good!");
+                    //Debug.Log("Good!");
                     var sz = Instantiate(goodsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sz.transform.parent = transform;
                     SoundManager.instance.PlayBad(source);
@@ -87,7 +101,7 @@ public class Ball : MonoBehaviour
             {
                 if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.5)
                 {
-                    Debug.Log("Perfect!");
+                    //Debug.Log("Perfect!");
                     var sx = Instantiate(perfectsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sx.transform.parent = transform;
                     Destroy(sx, 1f);
@@ -96,7 +110,7 @@ public class Ball : MonoBehaviour
                 }
                 else if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.8)
                 {
-                    Debug.Log("Great!");
+                    //Debug.Log("Great!");
                     var sy = Instantiate(greatsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sy.transform.parent = transform;
                     SoundManager.instance.PlayOkay(source);
@@ -104,7 +118,7 @@ public class Ball : MonoBehaviour
                 }
                 else
                 {
-                    Debug.Log("Good!");
+                    //Debug.Log("Good!");
                     var sz = Instantiate(goodsprite, transform.position + new Vector3(2, 4, 1), Quaternion.identity);
                     //sz.transform.parent = transform;
                     SoundManager.instance.PlayBad(source);
@@ -114,6 +128,7 @@ public class Ball : MonoBehaviour
                 //Destroy(tempToken);
                 //rigidbody.AddForce(new Vector2(400, 0));
                 //rigidbody.velocity = new Vector2(rigidbody.velocity.x + 10f, 0);
+                greenHit();
                 StartCoroutine(speedBurst());
 
 
@@ -125,7 +140,7 @@ public class Ball : MonoBehaviour
                 {
                     rigidbody.AddForce(new Vector2(0, 500));
                     SoundManager.instance.PlayJump(source);
-                    trailParticle.GetComponent<ParticleSystem>().Stop();
+                    //trailParticle.GetComponent<ParticleSystem>().Stop();
                 }
             }
         }
@@ -133,32 +148,35 @@ public class Ball : MonoBehaviour
 
         //Debug.Log(rigidbody.velocity.x);
 
-        //SPEED CONTROL
-
-        if (rigidbody.velocity.x < ballMinimumSpeed)
-        {
-            rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.05f, rigidbody.velocity.y);
-        }
-
-        if (rigidbody.velocity.x > ballMaximumSpeed && superCharged == false)
-        {
-            rigidbody.velocity = new Vector2(ballMaximumSpeed, rigidbody.velocity.y);
-        }
-
-
         //TRAIL PARTICLE FOLLOW & COLOUR
-        trailParticle.transform.position = new Vector3(transform.position.x - 0.4f, transform.position.y - 0.4f, transform.position.z);
+        //trailParticle.transform.position = new Vector3(transform.position.x - 0.4f, transform.position.y - 0.4f, transform.position.z);
         var main = trailParticle.GetComponent<ParticleSystem>().main;
         main.startColor = new Color(GetComponent<SpriteRenderer>().color.r + 0.2f, GetComponent<SpriteRenderer>().color.g + 0.2f, GetComponent<SpriteRenderer>().color.b + 0.2f);
+        //Debug.Log(trailParticle);
     }
 
     private void FixedUpdate()
     {
-        /*if (GetComponent<Rigidbody>())
+        //SPEED CONTROL
+
+        if (rigidbody.velocity.x < ballMinimumSpeed)
         {
-            Vector3 gravity = -9.81f * 2 * Vector3.up;
-            rigidbody.AddForce(gravity, ForceMode.Acceleration);
-        }*/
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x + 0.1f, rigidbody.velocity.y);
+        }
+
+        if (rigidbody.velocity.x > ballMaximumSpeed && superCharged == false)
+        {
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x - 0.1f, rigidbody.velocity.y);
+        }
+
+        if (rigidbody.velocity.x > currentBallSpeed && isDecaying)
+        {
+            rigidbody.velocity = new Vector2(rigidbody.velocity.x - 1f, rigidbody.velocity.y);
+        }
+        else
+        {
+            isDecaying = false;
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -223,7 +241,7 @@ public class Ball : MonoBehaviour
             if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
             {
                 SoundManager.instance.PlayLand(source);
-                trailParticle.GetComponent<ParticleSystem>().Play();
+                //trailParticle.GetComponent<ParticleSystem>().Play();
             }
             else
             {
@@ -238,24 +256,26 @@ public class Ball : MonoBehaviour
     {
         for (int i = 0; i < breakNumber; i++)
         {
-            Instantiate(breakBox, transform.position, Quaternion.identity);
+            Destroy(Instantiate(breakBox, transform.position, Quaternion.identity), 10f);
         }      
     }
 
     IEnumerator speedBurst()
     {
-        currentBallSpeed = rigidbody.velocity.x;
-        rigidbody.velocity = new Vector2(50, 0);
+        currentBallSpeed = rigidbody.velocity.x + 5f;
+        rigidbody.velocity = new Vector2(ballMaximumSpeed + 10f, 0);
         speedBurstParticle.GetComponent<ParticleSystem>().Play();
         superCharged = true;
-        Destroy(tempToken);
+        //Destroy(tempToken);
         rigidbody.gravityScale = 0;
-        
-        yield return new WaitForSeconds(0.15f);
+        isDecaying = true;
+
+        yield return new WaitForSeconds(0.5f);
+
         superCharged = false;
         speedBurstParticle.GetComponent<ParticleSystem>().Stop();
         rigidbody.gravityScale = 2;
-        rigidbody.velocity = new Vector2 (currentBallSpeed, 0);
+        //rigidbody.velocity = new Vector2 (currentBallSpeed, 0);
 
         //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
     }
