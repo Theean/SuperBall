@@ -9,6 +9,7 @@ TagManager:
   - Bounce
   - Token2
   - Breakable
+  - Final
   layers:
   - Default
   - TransparentFX

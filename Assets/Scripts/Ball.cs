@@ -26,6 +26,8 @@ public class Ball : MonoBehaviour
     public bool canFast;
     public bool jumped;
     public bool superCharged;
+    public bool finalfly;
+    public bool boxComing;
     bool isDecaying;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
 
@@ -63,6 +65,10 @@ public class Ball : MonoBehaviour
     void Update()
     {
 
+        if (finalfly == true)
+        {
+            StartCoroutine(finalFly());
+        }
         //bool for jumpburst
         if (canFast == true)
         {
@@ -210,6 +216,10 @@ public class Ball : MonoBehaviour
             canBreak = true;
             tempToken = collision.gameObject;
         }
+        else if (collision.tag == "Final")
+        {
+            finalfly = true;
+        }
         else if (collision.tag == "Breakable")
         {
             //Do Something
@@ -317,5 +327,18 @@ public class Ball : MonoBehaviour
         //if can fast bool moved to update
   
         yield return null;
+    }
+
+    IEnumerator finalFly()
+    {
+
+        finalfly = false;
+        superCharged = true;
+        speedBurstParticle.GetComponent<ParticleSystem>().Play();
+        rigidbody.velocity = new Vector2(100f, 0);
+
+        yield return new WaitForSeconds(1f);
+
+        boxComing = true;
     }
 }
