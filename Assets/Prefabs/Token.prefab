@@ -28,7 +28,7 @@ Transform:
   m_GameObject: {fileID: 3500559884713612493}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 5}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 5326361776946390421}
   m_Father: {fileID: 0}
@@ -71,8 +71,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c75a00ebf8bd5404382fce99415c3af2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9489c83a4e2f4e147a3598bfc2a8b69b, type: 3}
+  m_Color: {r: 0.93422484, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -97,7 +97,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.15687633, y: -0.19609642}
   serializedVersion: 2
-  m_Radius: 2.345164
+  m_Radius: 10
 --- !u!114 &6739232893670115759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -111,14 +111,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OuterRing: {fileID: 4695398374166603210}
-  PlayerBall: {fileID: 0}
-  x: {x: 0, y: 0}
-  y: {x: 0, y: 0}
-  ringSize: 0
-  playerDistance: 0
-  z: {x: 0, y: 0}
-  isClose: 0
-  isPassed: 0
 --- !u!1 &4695398374166603210
 GameObject:
   m_ObjectHideFlags: 0
@@ -146,7 +138,7 @@ Transform:
   m_GameObject: {fileID: 4695398374166603210}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 2964665479983670941}
   m_RootOrder: 0
@@ -188,8 +180,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c75a00ebf8bd5404382fce99415c3af2, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9489c83a4e2f4e147a3598bfc2a8b69b, type: 3}
+  m_Color: {r: 0.93007565, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -214,4 +206,4 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.6
+  m_Radius: 10

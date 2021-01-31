@@ -27,7 +27,7 @@ Transform:
   m_GameObject: {fileID: 2248540783085617424}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3, y: 3, z: 3}
   m_Children: []
   m_Father: {fileID: 8591064441290981959}
   m_RootOrder: 0
@@ -69,8 +69,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c75a00ebf8bd5404382fce99415c3af2, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.021330357, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9489c83a4e2f4e147a3598bfc2a8b69b, type: 3}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -95,7 +95,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: 0, y: 0}
   serializedVersion: 2
-  m_Radius: 1.6
+  m_Radius: 10
 --- !u!1 &7965021349389266967
 GameObject:
   m_ObjectHideFlags: 0
@@ -124,8 +124,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7965021349389266967}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -638.72, y: 1, z: 0}
-  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_LocalPosition: {x: 0, y: 1, z: 0}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 1726573883994276175}
   m_Father: {fileID: 0}
@@ -168,8 +168,8 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: c75a00ebf8bd5404382fce99415c3af2, type: 3}
-  m_Color: {r: 0, g: 1, b: 0.00427413, a: 1}
+  m_Sprite: {fileID: 21300000, guid: 9489c83a4e2f4e147a3598bfc2a8b69b, type: 3}
+  m_Color: {r: 0, g: 1, b: 0, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -194,7 +194,7 @@ CircleCollider2D:
   m_UsedByComposite: 0
   m_Offset: {x: -0.13404107, y: -0.22696114}
   serializedVersion: 2
-  m_Radius: 2.2510908
+  m_Radius: 10
 --- !u!114 &259973478017166709
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -208,14 +208,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   OuterRing: {fileID: 2248540783085617424}
-  PlayerBall: {fileID: 0}
-  x: {x: 0, y: 0}
-  y: {x: 0, y: 0}
-  ringSize: 0
-  playerDistance: 0
-  z: {x: 0, y: 0}
-  isClose: 0
-  isPassed: 0
 --- !u!50 &6943798337922246236
 Rigidbody2D:
   serializedVersion: 4

@@ -70,9 +70,9 @@ public class Ball : MonoBehaviour
 
             if (currentBallSpeed > 30f)
             {
-                
+                rigidbody.velocity = new Vector2(currentBallSpeed, rigidbody.velocity.y);
             }
-            rigidbody.velocity = new Vector2(currentBallSpeed, rigidbody.velocity.y);
+            
             Debug.Log("Velocity is " + rigidbody.velocity);
             canFast = false;
         }
