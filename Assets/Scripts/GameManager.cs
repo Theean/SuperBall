@@ -7,8 +7,19 @@ public class GameManager : MonoBehaviour
     public static GameManager instance;
 
     public Transform baseTransform;
-
     public GameObject ball;
+
+    [SerializeField] Canvas canvas;
+
+    private void OnEnable()
+    {
+        EndTrigger.onEndTrigger += StartEnd;
+    }
+
+    private void OnDisable()
+    {
+        EndTrigger.onEndTrigger -= StartEnd;
+    }
 
     private void Awake()
     {
@@ -23,12 +34,26 @@ public class GameManager : MonoBehaviour
 
         DontDestroyOnLoad(this.gameObject);
     }
-    // Update is called once per frame
-    void Update()
+    
+    void StartEnd()
     {
-        /*if (ball.transform.position.z != baseTransform.position.z)
+        if (canvas != null)
         {
-            ball.transform.position = new Vector3(ball.transform.position.x, ball.transform.position.y, baseTransform.position.z);
-        }*/
+            StartCoroutine(Fade());
+        }
+    }
+
+    IEnumerator Fade()
+    {
+        yield return new WaitForSeconds(8f);
+        canvas.GetComponent<Animator>().SetTrigger("Fade");
+        StartCoroutine(End());
+    }
+
+    IEnumerator End()
+    {
+        yield return new WaitForSeconds(2f);
+        Debug.Log("Quit");
+        Application.Quit();
     }
 }

@@ -73,7 +73,6 @@ public class ColourManager : MonoBehaviour
         {
             currentColour = Color.red;
             colourList[i].GetComponent<SpriteRenderer>().color = Color.red;
-            Debug.Log("TRIGGERED");
         }
     }
 }

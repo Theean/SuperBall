@@ -11,7 +11,6 @@ public class Obstacle : MonoBehaviour
     void Start()
     {
         startDeclare(gameObject);
-        Debug.Log("TRIGGERED");
     }
 
     // Update is called once per frame

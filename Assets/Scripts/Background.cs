@@ -62,9 +62,8 @@ public class Background : MonoBehaviour
         //GetComponent<Material>().color = currentColour;
     }
 
-    void End(Transform ballPos)
+    void End()
     {
-        direction = ballPos.position - transform.position;
-        end = true;
+
     }
 }

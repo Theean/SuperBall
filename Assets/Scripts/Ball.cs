@@ -78,18 +78,16 @@ public class Ball : MonoBehaviour
             {
                 rigidbody.velocity = new Vector2(currentBallSpeed, rigidbody.velocity.y);
             }
-            
-            Debug.Log("Velocity is " + rigidbody.velocity);
+
             canFast = false;
         }
 
         //JUMP & BOOST
-        if (OVRInput.GetDown(OVRInput.Button.One) || Input.GetKeyDown("space") || OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
+        if (Input.GetKeyDown("space") || OVRInput.GetDown(OVRInput.Button.One) || OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger)
+            || OVRInput.GetDown(OVRInput.Button.Three) || OVRInput.GetDown(OVRInput.RawButton.LIndexTrigger))
         {
             if (canBoost)
             {
-                //Mathf.Abs((gameObject.transform.position - tempToken.transform.position).magnitude) <= 0.3
-
                 if (Mathf.Abs(gameObject.transform.position.x - tempToken.transform.position.x) <= 0.6)
                 {
                     //Debug.Log("Perfect!");
@@ -226,7 +224,6 @@ public class Ball : MonoBehaviour
             Explosion();
             tempToken = collision.gameObject;
             Destroy(tempToken);
-            Debug.Log("Collision Triggered");
 
             if (superCharged == false)
             {
@@ -336,6 +333,7 @@ public class Ball : MonoBehaviour
         superCharged = true;
         speedBurstParticle.GetComponent<ParticleSystem>().Play();
         rigidbody.velocity = new Vector2(100f, 0);
+        rigidbody.gravityScale = 0;
 
         yield return new WaitForSeconds(1f);
 
