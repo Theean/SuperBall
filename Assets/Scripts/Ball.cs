@@ -17,12 +17,14 @@ public class Ball : MonoBehaviour
     float currentBallSpeed;
 
     public GameObject breakBox;
-    public int breakNumber=10;
+    public int breakNumber = 10;
 
     AudioSource source;
     Rigidbody2D rigidbody;
     public bool canBoost;
     public bool canBreak;
+    public bool canFast;
+    public bool jumped;
     public bool superCharged;
     bool isDecaying;
     GameObject tempToken; //used to keep track of which token the ball is currently in contact with
@@ -60,6 +62,21 @@ public class Ball : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
+        //bool for jumpburst
+        if (canFast == true)
+        {
+            jumped = false;
+
+            if (currentBallSpeed > 30f)
+            {
+                
+            }
+            rigidbody.velocity = new Vector2(currentBallSpeed, rigidbody.velocity.y);
+            Debug.Log("Velocity is " + rigidbody.velocity);
+            canFast = false;
+        }
+
         //JUMP & BOOST
         if (OVRInput.GetDown(OVRInput.Button.One) || Input.GetKeyDown("space") || OVRInput.GetDown(OVRInput.RawButton.RIndexTrigger))
         {
@@ -95,7 +112,9 @@ public class Ball : MonoBehaviour
 
                 //rigidbody.AddForce(new Vector2(400, 600));
 
-                rigidbody.velocity = new Vector2(rigidbody.velocity.x + 5f, 15f);
+                //rigidbody.velocity = new Vector2(rigidbody.velocity.x + 5f, 15f);
+                StartCoroutine(jumpBurst());
+                
             }
             else if (canBreak)
             {
@@ -237,11 +256,15 @@ public class Ball : MonoBehaviour
             main.startColor = GetComponent<SpriteRenderer>().color;
             //obj.GetComponent<ParticleSystem>().Stop();
 
-            RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 0.5f);
+            RaycastHit2D hit2D = Physics2D.Raycast(transform.position, -Vector2.up, 1f);
             if (hit2D.collider != null && hit2D.collider.tag == "Obstacle")
             {
                 SoundManager.instance.PlayLand(source);
                 //trailParticle.GetComponent<ParticleSystem>().Play();
+                if (jumped == true)
+                {
+                    canFast = true;
+                }
             }
             else
             {
@@ -278,5 +301,21 @@ public class Ball : MonoBehaviour
         //rigidbody.velocity = new Vector2 (currentBallSpeed, 0);
 
         //rigidbody.velocity = new Vector2(ballMaximumSpeed - 2, rigidbody.velocity.y);
+    }
+
+
+    IEnumerator jumpBurst()
+    {
+
+        Debug.Log("Velocity is " + rigidbody.velocity);
+        jumped = true;
+        currentBallSpeed = rigidbody.velocity.x;
+        rigidbody.velocity = new Vector2(30f, 15f);
+        Debug.Log("Velocity is " + rigidbody.velocity);
+
+
+        //if can fast bool moved to update
+  
+        yield return null;
     }
 }
